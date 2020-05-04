@@ -1,0 +1,14 @@
+<settings>
+    <profiles>
+        <profile>
+            <id>g-appengine</id>
+            <properties>
+                <gcloud-application-id>your_app_id</gcloud-application-id>
+            </properties>
+        </profile>
+    </profiles>
+
+    <activeProfiles>
+        <activeProfile>g-appengine</activeProfile>
+    </activeProfiles>
+</settings>

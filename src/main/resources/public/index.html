@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Converter</title>
+</head>
+<body>
+<label for="url">Url</label>
+<input id="url">
+<script lang="javascript">
+    function tableCreate() {
+        var body = document.getElementsByTagName('body')[0];
+        var tbl = document.createElement('table');
+        tbl.style.width = '100px';
+        tbl.setAttribute('border', '1');
+        var tbdy = document.createElement('tbody');
+        for (var i = 1; i < 5; i++) {
+            var tr = document.createElement('tr');
+            for (var j = 1; j < 3; j++) {
+                    var td = document.createElement('td');
+                    td.appendChild(document.createTextNode('O'));
+                    td.setAttribute("onClick", "select(" + i + "," + j+ ");");
+                    tr.appendChild(td)
+            }
+            tbdy.appendChild(tr);
+        }
+        tbl.appendChild(tbdy);
+        body.appendChild(tbl)
+    }
+
+    function select(row, column) {
+        url = document.getElementById("url").value
+        if(url != null) {
+            window.location.href = window.location.protocol + "//" + window.location.host  + window.location.pathname + "convert?url=" + url + "&row=" + row + "&col=" + column;
+        }
+    }
+
+    tableCreate();
+</script>
+</body>
+</html>
