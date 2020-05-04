@@ -1,11 +1,9 @@
 package ee.j6ukur.pdfconverter;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import io.micronaut.runtime.Micronaut;
 
-@SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
+        Micronaut.run(Main.class, args);
     }
 }

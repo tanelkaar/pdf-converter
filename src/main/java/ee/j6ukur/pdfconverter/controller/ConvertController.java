@@ -1,26 +1,24 @@
 package ee.j6ukur.pdfconverter.controller;
 
 import ee.j6ukur.pdfconverter.converter.PdfConverter;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletResponse;
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.QueryValue;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-@RestController
+@Controller
 public class ConvertController {
 
-    @RequestMapping(value = "/convert", method = RequestMethod.GET)
-    public void convert(HttpServletResponse response,
-                        @RequestParam("url") String url,
-                        @RequestParam(value = "row", required = false, defaultValue = "1") Integer row,
-                        @RequestParam(value = "col", required = false, defaultValue = "1") Integer col,
-                        @RequestParam(value = "lines", required = false, defaultValue = "false") boolean lines,
-                        @RequestParam(value = "all", required = false, defaultValue = "false") boolean all) throws IOException, InterruptedException {
-        response.setContentType("application/pdf");
-//        response.setContentType("image/png");
-        PdfConverter.PdfConverterBuilder.aPdfConverter().withUrl(url).withOut(response.getOutputStream()).withRow(row).withCol(col).withAll(all).withLines(lines).build().render();
+    @Get(uri = "/convert", produces = "application/pdf")
+    public byte[] convert(@QueryValue("url") String url,
+                          @QueryValue(value = "row", defaultValue = "1") Integer row,
+                          @QueryValue(value = "col", defaultValue = "1") Integer col,
+                          @QueryValue(value = "lines", defaultValue = "false") boolean lines,
+                          @QueryValue(value = "all", defaultValue = "false") boolean all) throws IOException, InterruptedException {
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        PdfConverter.PdfConverterBuilder.aPdfConverter().withUrl(url).withOut(os).withRow(row).withCol(col).withAll(all).withLines(lines).build().render();
+        return os.toByteArray();
     }
 }
