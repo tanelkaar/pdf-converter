@@ -5,7 +5,6 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.QueryValue;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 @Controller
 public class ConvertController {
@@ -15,10 +14,22 @@ public class ConvertController {
                           @QueryValue(value = "row", defaultValue = "1") Integer row,
                           @QueryValue(value = "col", defaultValue = "1") Integer col,
                           @QueryValue(value = "lines", defaultValue = "false") boolean lines,
-                          @QueryValue(value = "all", defaultValue = "false") boolean all) throws IOException, InterruptedException {
+                          @QueryValue(value = "all", defaultValue = "false") boolean all) {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        PdfConverter.PdfConverterBuilder.aPdfConverter().withUrl(url).withOut(os).withRow(row).withCol(col).withAll(all).withLines(lines).build().render();
+        PdfConverter.PdfConverterBuilder.aPdfConverter(url).withRow(row).withCol(col).withAll(all).withLines(lines).build().render(os);
+        return os.toByteArray();
+    }
+
+    @Get(uri = "/image", produces = "image/png")
+    public byte[] image(@QueryValue("url") String url,
+                          @QueryValue(value = "row", defaultValue = "1") Integer row,
+                          @QueryValue(value = "col", defaultValue = "1") Integer col,
+                          @QueryValue(value = "lines", defaultValue = "false") boolean lines,
+                          @QueryValue(value = "all", defaultValue = "false") boolean all) {
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        PdfConverter.PdfConverterBuilder.aPdfConverter(url).withRow(row).withCol(col).withAll(all).withLines(lines).build().image(os);
         return os.toByteArray();
     }
 }
